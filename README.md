@@ -57,3 +57,97 @@ const IndexScreen = () => {
   );
 };
 ```
+
+### Provider/Context SETUP II
+./src/context/createDataContext.js
+```
+import React, { useReducer } from 'react';
+
+export default (reducer, actions, initialState) => {
+  const Context = React.createContext();
+
+  const Provider = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const boundActions = {};
+    for (let key in actions) {
+      boundActions[key] = actions[key](dispatch);
+    }
+    return (
+      <Context.Provider value={{ state, ...boundActions }}>
+        {children}
+      </Context.Provider>
+    );
+  };
+  return { Context, Provider };
+};
+```
+
+./src/context/BlogContext.js
+```
+import createDataContext from './createDataContext';
+
+const blogReducer = (state, action) => {
+  switch (action.type) {
+    case 'add_blogpost':
+      return [...state, { title: `#${state.length + 1} Post` }];
+    default:
+      return state;
+  }
+};
+
+const addBlogPost = (dispatch) => {
+  return () => {
+    dispatch({ type: 'add_blogpost' });
+  };
+};
+
+export const { Context, Provider } = createDataContext(
+  blogReducer,
+  { addBlogPost },
+  [],
+);
+```
+
+./src/App.js
+```
+...
+import { Provider } from './src/context/BlogContext';
+
+...
+export default () => {
+  return (
+    <Provider>
+      <App />
+    </Provider>
+  );
+};
+
+```
+
+.src/screens/IndexScreen.js
+```
+import React, { useContext } from 'react';
+...
+import { Context } from '../context/BlogContext';
+
+const IndexScreen = () => {
+  const { state, addBlogPost } = useContext(Context);
+
+  return (
+    ...
+  
+      <Button
+        title="Add Post"
+        onPress={addBlogPost}
+      />
+      <FlatList
+        data={state}
+        keyExtractor={(item) => item.title}
+        renderItem={({ item }) => <Text>{item.title}</Text>}
+      />
+    </View>
+  );
+};
+
+...
+```
