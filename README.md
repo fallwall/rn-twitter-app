@@ -212,3 +212,76 @@ BlogPostForm.defaultProps = {
   },
 };
 ```
+
+### JSON Server
+http://npmjs.com/package/json-server
+Pretty much only good for development purpose
+up one directory, mdir:
+```
+npm i json-server ngrok
+```
+
+![ngrok server](https://i.imgur.com/cZKJrci.png)
+
+touch db.json
+```
+{
+  "blogposts": []
+}
+```
+
+package.json / scripts:
+```
+"db": "json-server -w db.json",
+ "tunnel": "ngrok http 3000"
+```
+to change port:
+```
+"db": "json-server -w db.json -p 3001",
+"tunnel": "ngrok http 3001"
+```
+
+to start:
+```
+npm run db
+```
+ \{^_^}/ hi!
+
+ and on seperate terminal window:
+ ```
+ npm run tunnel
+ ```
+ ✧*｡٩(ˊᗜˋ*)و✧*｡
+ 8 hour session
+
+ ![interaction](https://i.imgur.com/69lLDIz.png)
+
++npm i axios 
+
+ *Json server automatically create Id for you
+
+
+### AddListener 
+so everytime when this screen becomes the primary screen, the getBlogPosts() is invoked.
+
+``
+  useEffect(() => {
+    getBlogPosts();
+    navigation.addListener('didFocus', () => {
+      getBlogPosts();
+    });
+  }, []);
+```
+But for listeners, we need to clean up. so no memory leak:
+
+```
+  useEffect(() => {
+    getBlogPosts();
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts();
+    });
+    return () => {
+      listener.remove();
+    };
+  }, []);
+```
