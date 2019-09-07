@@ -5,12 +5,14 @@ import createDataContext from './createDataContext';
 // // const BlogContext = React.createContext();
 
 //below, first you can call state or blogpost
+
 const blogReducer = (state, action) => {
   switch (action.type) {
     case 'add_blogpost':
       return [...state, {
-        title: `#${state.length + 1} Post`,
-        id: Math.floor(Math.random() * 9999999)
+        title: action.payload.title,
+        content: action.payload.content,
+        id: Math.floor(Math.random() * 9999999),
       }];
     case 'delete_blogpost':
       return state.filter(item => item.id !== action.payload);
@@ -32,8 +34,9 @@ const blogReducer = (state, action) => {
 //   //blocgPosts or state
 
 const addBlogPost = (dispatch) => {
-  return () => {
-    dispatch({ type: 'add_blogpost' });
+  return (title, content, callback) => {
+    dispatch({ type: 'add_blogpost', payload: { title, content } });
+    callback();
   };
 };
 

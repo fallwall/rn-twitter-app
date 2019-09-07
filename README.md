@@ -154,3 +154,50 @@ const IndexScreen = () => {
 
 useReducer revisited: 
 https://reactjs.org/docs/hooks-reference.html#usereducer
+
+
+### To Add Stuff on Navigator/Header 
+```
+IndexScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight:
+      (<TouchableOpacity
+        onPress={() => navigation.navigate('Create')}
+      >
+        <Feather name="plus" size={30} />
+      </TouchableOpacity>)
+    ,
+  };
+};
+```
+
+
+### Submit Trivia 💡
+
+on the page to submit
+```
+      <Button
+        title="Submit"
+        onPress={() => addBlogPost(title, content, () => {
+          navigation.navigate('Index');
+         })}
+      />
+```
+above, passing in the navigating into the addblogPost as a callback
+
+and at the actual function:
+```
+const addBlogPost = (dispatch) => {
+  return async (title, content, callback) => {
+    try {
+    await axios.post(.....);
+    dispatch({ type: 'add_blogpost', payload: { title, content } });
+    callback();
+  } catch(err) {
+      ....
+  }
+  }:
+};
+```
+
+💡 💡 💡We don't want to redirect users before the action succeed 

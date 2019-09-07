@@ -2,18 +2,15 @@ import React, { useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, Button, TouchableOpacity } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
+
 import { Context } from '../context/BlogContext';
 
 
 const IndexScreen = ({ navigation }) => {
   console.log(navigation);
-  const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+  const { state, deleteBlogPost } = useContext(Context);
   return (
     <View>
-      <Button
-        title="Add Post"
-        onPress={addBlogPost}
-      />
       <FlatList
         data={state}
         keyExtractor={(item) => item.title}
@@ -35,6 +32,18 @@ const IndexScreen = ({ navigation }) => {
       />
     </View>
   );
+};
+
+IndexScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight:
+      (<TouchableOpacity
+        onPress={() => navigation.navigate('Create')}
+      >
+        <Feather name="plus" size={30} />
+      </TouchableOpacity>)
+    ,
+  };
 };
 
 const styles = StyleSheet.create({
