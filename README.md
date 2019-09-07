@@ -151,3 +151,6 @@ const IndexScreen = () => {
 
 ...
 ```
+
+useReducer revisited: 
+https://reactjs.org/docs/hooks-reference.html#usereducer
