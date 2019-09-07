@@ -200,4 +200,15 @@ const addBlogPost = (dispatch) => {
 };
 ```
 
-💡 💡 💡We don't want to redirect users before the action succeed 
+💡 💡 💡We don't want to redirect users before the action succeed , to make callback argument optional, use condition, i.e. 
+callback && callback();
+
+### 🔥 Initial Values /Reusing Form complication 🔥
+```
+BlogPostForm.defaultProps = {
+  initialValues: {
+    title: '',
+    content: '',
+  },
+};
+```

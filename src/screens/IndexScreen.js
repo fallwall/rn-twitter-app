@@ -7,7 +7,6 @@ import { Context } from '../context/BlogContext';
 
 
 const IndexScreen = ({ navigation }) => {
-  console.log(navigation);
   const { state, deleteBlogPost } = useContext(Context);
   return (
     <View>
