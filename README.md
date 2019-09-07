@@ -264,7 +264,7 @@ npm run db
 ### AddListener 
 so everytime when this screen becomes the primary screen, the getBlogPosts() is invoked.
 
-``
+```
   useEffect(() => {
     getBlogPosts();
     navigation.addListener('didFocus', () => {
